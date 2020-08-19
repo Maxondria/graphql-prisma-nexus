@@ -17,15 +17,19 @@ schema.extendType({
       type: 'Post',
       nullable: false,
       resolve(_root, _args, { db }) {
-        return db.posts.filter((post) => !post.published);
+        return db.post.findMany({
+          where: { published: false },
+        });
       },
     });
 
     t.list.field('posts', {
       type: 'Post',
       nullable: false,
-      resolve(_root, _args, { db }) {
-        return db.posts.filter((post) => post.published);
+      async resolve(_root, _args, { db }) {
+        return await db.post.findMany({
+          where: { published: true },
+        });
       },
     });
   },
@@ -41,15 +45,10 @@ schema.extendType({
         title: schema.stringArg({ required: true }),
         body: schema.stringArg({ required: true }),
       },
-      resolve(_root, args, { db }) {
-        const draft = {
-          id: db.posts.length + 1,
-          title: args.title,
-          body: args.body,
-          published: false,
-        };
-        db.posts.push(draft);
-        return draft;
+      async resolve(_root, { body, title }, { db }) {
+        return await db.post.create({
+          data: { title, body, published: false },
+        });
       },
     });
 
@@ -59,15 +58,11 @@ schema.extendType({
       args: {
         draftId: schema.intArg({ required: true }),
       },
-      resolve(_root, args, { db }) {
-        const drapftToPublish = db.posts.find(
-          (post) => post.id === args.draftId,
-        );
-        if (!drapftToPublish) {
-          throw new Error(`Could not find draft with id: ${args.draftId}`);
-        }
-        drapftToPublish.published = true;
-        return drapftToPublish;
+      async resolve(_root, { draftId }, { db }) {
+        return await db.post.update({
+          where: { id: draftId },
+          data: { published: true },
+        });
       },
     });
   },

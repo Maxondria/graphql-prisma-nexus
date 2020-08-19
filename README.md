@@ -37,4 +37,16 @@ If the server started properly, you should see the following log:
 
 Click that url (http://localhost:4000), it should open the GraphQL Playground.
 
-5. You're all set! 
+5. You're all set!
+
+## Prisma Set-up
+
+[Read more](https://nexusjs.org/pluginss/prisma/overview) here.
+
+Read more here:
+
+- Create a directory called `prisma`
+- Add a file `schema.prisma`
+- Add a .env with the DATABASE_URL
+- Create a migration file: `yarn prisma migrate save --experimental`
+- Migrate your database: `npm run prisma migrate up --experimental`

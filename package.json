@@ -4,7 +4,8 @@
   "license": "MIT",
   "version": "0.0.0",
   "dependencies": {
-    "nexus": "^0.24.2"
+    "nexus": "^0.24.2",
+    "nexus-plugin-prisma": "^0.17.0"
   },
   "scripts": {
     "dev": "nexus dev",
@@ -27,5 +28,10 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node"
+  },
+  "resolutions": {
+    "@prisma/client": "2.0.0",
+    "@prisma/cli": "2.0.0",
+    "@prisma/sdk": "2.0.0"
   }
 }
